@@ -5,6 +5,7 @@
 #include <array>
 #include <memory>
 #include <boost/asio.hpp>
+#include "reply.hpp"
 
 namespace http {
 namespace server {
@@ -44,7 +45,7 @@ private:
   std::array<char, 8192> buffer_;
 
   /// The reply to be sent back to the client.
-  std::string reply_;
+  reply reply_;
 };
 
 typedef std::shared_ptr<connection> connection_ptr;
