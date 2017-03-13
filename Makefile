@@ -77,3 +77,6 @@ integration: all
 
 coverage: test
 	gcov -r $(filter-out webserver.cc, $(SRC))
+n:
+	g++ server_test.cc server.cc server_info.cc config_parser.cc connection.cc response.cc request.cc mime-types.cc request_handler.cc echo_handler.cc static_handler.cc -o server_test -std=c++11 -g -Wall -Werror -pthread -lboost_system -lboost_filesystem libgtest.a -isystem $(GTEST_DIR)/include $(GTEST_DIR)/src/gtest_main.cc -lz -lboost_regex -lboost_iostreams
+	./server_test

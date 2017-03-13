@@ -2,8 +2,9 @@
 #include "server.hpp"
 #include "config_parser.h"
 #include <string>
+#include <thread>
+#include <stdlib.h> 
 
-std::unordered_map<std::string, std::string> test_map;
 
 NginxConfig retGoodConfig()
 {
@@ -13,10 +14,20 @@ NginxConfig retGoodConfig()
     return test_config;
 }
 
+void waitAndKill(http::server::server test)
+{
+    sleep(5000);
+    test.kill();
+}
+
 TEST(ServerTest, GoodConfigs)
 {
     NginxConfig test_config = retGoodConfig();
     EXPECT_NO_THROW(http::server::server test_server("127.0.0.1", test_config));
     http::server::server test("0.0.0.0", test_config);
-    test.kill();
+    EXPECT_TRUE(test.get_config_info(test_config));
+    
+    std::thread t1(waitAndKill, test);
+    test.run();
+    t1.join();
 }
